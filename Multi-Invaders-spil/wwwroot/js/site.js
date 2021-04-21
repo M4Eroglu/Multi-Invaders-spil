@@ -49,6 +49,8 @@ const GAME_STATE =
 
     virus: [],
     virusShots: [],
+    gameOver: false,
+   
 };
 
 function setPosition($el, x, y)
@@ -97,6 +99,7 @@ function createPlayers($container)
     $player1.className = "player";
     $container.appendChild($player1);
     setPosition($player1, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
+ 
 
     //Creating Player 2
     GAME_STATE.P2_playerX = GAME_WIDTH / 2 + GAME_WIDTH / 4;
@@ -106,6 +109,15 @@ function createPlayers($container)
     $player2.className = "player2";
     $container.appendChild($player2);
     setPosition($player2, GAME_STATE.P2_playerX, GAME_STATE.P2_playerY);
+}
+
+function RemovePlayer($container, player)
+{
+    $container.removeChild(player);
+    GAME_STATE.gameOver = true;
+    const sound = new Audio("sounds/GameOver.ogg");
+    sound.play();
+
 }
 
 function updatePlayer1(time, $container)
@@ -359,8 +371,37 @@ function updateVirusShot(time, $container)
         }
 
         setPosition(virusShot.$virusShot, virusShot.x, virusShot.y);
+        const shotCol = virusShot.$virusShot.getBoundingClientRect();
+        const player = document.querySelector(".player");
+        const player2 = document.querySelector(".player2");
+        const virusCol = player.getBoundingClientRect();
+        const virusCol2 = player2.getBoundingClientRect();
+        var counter = 0,
+
+        if (virusAndShotCollision(shotCol, virusCol))
+        {
+
+            counter++;
+              
+            
+        }
+        if (virusAndShotCollision(shotCol, virusCol2)) {
+
+            counter++;
+
+
+        }
+
+
+        if (counter == 3)
+        {
+            RemovePlayer($container, player);
+            RemovePlayer($container, player2);
+            break;
+        }
     }
     GAME_STATE.virusShots = GAME_STATE.virusShots.filter(e => !e.removed);
+    
 }
 
 function init()
