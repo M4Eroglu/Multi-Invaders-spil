@@ -24,6 +24,8 @@ const VIRUS_PADDING_VERTICAL = 100;
 const VIRUS_SPACING_VERTICAL = 100;
 const VIRUS_SHOT_COOLDOWN = 5.0;
 
+//let counter = 0;
+
 const GAME_STATE =
 {
     P1_playerX: 0,
@@ -117,6 +119,13 @@ function RemovePlayer($container, player)
     GAME_STATE.gameOver = true;
     const sound = new Audio("sounds/GameOver.ogg");
     sound.play();
+
+}
+
+function RemoveP($container, player)
+{
+    $container.removeChild(player);
+    
 
 }
 
@@ -376,29 +385,21 @@ function updateVirusShot(time, $container)
         const player2 = document.querySelector(".player2");
         const virusCol = player.getBoundingClientRect();
         const virusCol2 = player2.getBoundingClientRect();
-        var counter = 0,
+        let counter = 3;
 
-        if (virusAndShotCollision(shotCol, virusCol))
+        if (virusAndShotCollision(shotCol, virusCol) == counter)
         {
 
-            counter++;
-              
-            
+            RemoveP($container, player);
         }
-        if (virusAndShotCollision(shotCol, virusCol2)) {
+        
+       
 
-            counter++;
+        //if (counter == 3, virusAndShotCollision(shotCol, virusCol))
+        //{
+        //    RemoveP($container, player);
+        //}
 
-
-        }
-
-
-        if (counter == 3)
-        {
-            RemovePlayer($container, player);
-            RemovePlayer($container, player2);
-            break;
-        }
     }
     GAME_STATE.virusShots = GAME_STATE.virusShots.filter(e => !e.removed);
     
