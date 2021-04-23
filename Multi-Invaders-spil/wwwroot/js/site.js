@@ -1,4 +1,6 @@
-﻿// Player 1 KEYS
+﻿const { each } = require("jquery");
+
+// Player 1 KEYS
 const KEY_CODE_LEFT = 37; // Left Arrow Key
 const KEY_CODE_RIGHT = 39; // Right Arrow Key
 const KEY_CODE_SHOOT = 13; // Enter Key
@@ -24,7 +26,10 @@ const VIRUS_PADDING_VERTICAL = 100;
 const VIRUS_SPACING_VERTICAL = 100;
 const VIRUS_SHOT_COOLDOWN = 5.0;
 
-//let counter = 0;
+
+var players = [];
+
+
 
 const GAME_STATE =
 {
@@ -101,6 +106,7 @@ function createPlayers($container)
     $player1.className = "player";
     $container.appendChild($player1);
     setPosition($player1, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
+    players.push($player1);
  
 
     //Creating Player 2
@@ -111,6 +117,7 @@ function createPlayers($container)
     $player2.className = "player2";
     $container.appendChild($player2);
     setPosition($player2, GAME_STATE.P2_playerX, GAME_STATE.P2_playerY);
+    players.push($player2);
 }
 
 function RemovePlayer($container, player)
@@ -148,8 +155,12 @@ function updatePlayer1(time, $container)
 
     if (GAME_STATE.P1_shootKeyPressed && GAME_STATE.P1_PlayersCooldown <= 0)
     {
-        createShot1($container, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
-        GAME_STATE.P1_PlayersCooldown = SHOT_COOLDOWN;
+        if (document.querySelector(".player") != null)
+        {
+            createShot1($container, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
+            GAME_STATE.P1_PlayersCooldown = SHOT_COOLDOWN;
+        }
+        
     }
 
     if (GAME_STATE.P1_PlayersCooldown > 0)
@@ -158,7 +169,13 @@ function updatePlayer1(time, $container)
     }
 
     const $player1 = document.querySelector(".player");
-    setPosition($player1, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
+
+    if ($player1 != null)
+    {
+        
+        setPosition($player1, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
+    }
+    
 }
 
 function updatePlayer2(time, $container)
@@ -190,6 +207,7 @@ function updatePlayer2(time, $container)
     }
 
     const $player2 = document.querySelector(".player2");
+
     setPosition($player2, GAME_STATE.P2_playerX, GAME_STATE.P2_playerY);
 }
 
@@ -383,22 +401,34 @@ function updateVirusShot(time, $container)
         const shotCol = virusShot.$virusShot.getBoundingClientRect();
         const player = document.querySelector(".player");
         const player2 = document.querySelector(".player2");
-        const virusCol = player.getBoundingClientRect();
-        const virusCol2 = player2.getBoundingClientRect();
-        let counter = 3;
-
-        if (virusAndShotCollision(shotCol, virusCol) == counter)
+        if (player != null)
         {
+            const virusCol = player.getBoundingClientRect();
 
-            RemoveP($container, player);
+            
+            if (virusAndShotCollision(shotCol, virusCol))
+            {
+
+                RemoveP($container, player);
+
+
+            }
         }
         
-       
+        const virusCol2 = player2.getBoundingClientRect();
+        let counter = 0;
 
-        //if (counter == 3, virusAndShotCollision(shotCol, virusCol))
-        //{
-        //    RemoveP($container, player);
-        //}
+
+       
+            //if (virusAndShotCollision(shotCol, virusCol))
+            //{
+
+            //    RemoveP($container, player);
+
+
+            //}
+  
+
 
     }
     GAME_STATE.virusShots = GAME_STATE.virusShots.filter(e => !e.removed);
