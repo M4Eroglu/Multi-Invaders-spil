@@ -1,4 +1,4 @@
-﻿const { each } = require("jquery");
+﻿//const { each } = require("jquery");
 
 // Player 1 KEYS
 const KEY_CODE_LEFT = 37; // Left Arrow Key
@@ -57,6 +57,7 @@ const GAME_STATE =
     virus: [],
     virusShots: [],
     gameOver: false,
+    life: 3
    
 };
 
@@ -129,12 +130,12 @@ function RemovePlayer($container, player)
 
 }
 
-function RemoveP($container, player)
-{
-    $container.removeChild(player);
+//function RemoveP($container, player)
+//{
+//    $container.removeChild(player);
     
 
-}
+//}
 
 function updatePlayer1(time, $container)
 {
@@ -208,7 +209,11 @@ function updatePlayer2(time, $container)
 
     const $player2 = document.querySelector(".player2");
 
-    setPosition($player2, GAME_STATE.P2_playerX, GAME_STATE.P2_playerY);
+    if ($player2 != null)
+    {
+
+        setPosition($player2, GAME_STATE.P2_playerX, GAME_STATE.P2_playerY);
+    }
 }
 
 function createShot1($container, x, y)
@@ -387,6 +392,7 @@ function createVirusShot($container, x, y)
 function updateVirusShot(time, $container)
 {
     const virusShots = GAME_STATE.virusShots;
+    var life = 3;
     for (let i = 0; i < virusShots.length; i++)
     {
         const virusShot = virusShots[i];
@@ -408,15 +414,38 @@ function updateVirusShot(time, $container)
             
             if (virusAndShotCollision(shotCol, virusCol))
             {
-
-                RemoveP($container, player);
-
+                if (life  >= 0)
+                {
+                    life -= 1;
+                }
+                else
+                {
+                    RemovePlayer($container, player);
+                }
+               
 
             }
+
+        }
+        if (player2 != null) {
+            const virusCol2 = player2.getBoundingClientRect();
+
+
+            if (virusAndShotCollision(shotCol, virusCol2)) {
+
+                if (life >= 0) {
+                    life -= 1;
+                }
+                else {
+                    RemovePlayer($container, player2);
+                }
+               
+            }
+
         }
         
-        const virusCol2 = player2.getBoundingClientRect();
-        let counter = 0;
+        
+        //let counter = 0;
 
 
        
