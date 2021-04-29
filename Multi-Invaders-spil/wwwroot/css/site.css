@@ -2,32 +2,33 @@
 body {
     height: 100%;
     overflow: hidden;
-}
-
-body {
     margin: 0;
     font: 16px sans-serif;
+    zoom: normal;
 }
 
 .wrap {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 header {
     text-align: center;
-    background: black;
-    color: #fff;
+    background: #2E165B;
+    color: red;
     padding: 10px;
+    font-size: 20px;
 }
 
 footer {
-    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
     text-align: center;
-    font-size: 11px;
-    background: black;
-    color: white;
+    font-size: 20px;
+    background: #2E165B;
+    color: red;
+    height: 100px;
 }
 
 .game-wrapper {
@@ -40,10 +41,9 @@ footer {
 
 .game {
     width: 1920px;
-    height: 1080px;
-    background: url(../img/gameBackground.jpg);
+    height: 860px;
+    background: url(../img/gbg.jpg);
     animation:  scroll-background 500s linear infinite;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
@@ -80,31 +80,31 @@ footer {
 .game .bullet1 {
     position: absolute;
     margin-left: -2.5px;
-    height: 30px;
+    height: 25px;
 }
 
 .game .bullet2 {
     position: absolute;
     margin-left: -2.5px;
-    height: 30px;
+    height: 25px;
 }
 
 .game .virus-bullet {
     position: absolute;
     margin-left: -2.5px;
-    height: 30px;
+    height: 25px;
 }
 
-.congratulations {
+.game-win {
     display: none;
     position: absolute;
     background: #c7a526;
     color: white;
-    padding: 20px 50px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px 200px;
     border-radius: 10px;
     text-align: center;
     animation: pop-in 1s;
+    font-size: 60px;
 }
 
 .game-over {
@@ -112,20 +112,35 @@ footer {
     position: absolute;
     background: #6b1818;
     color: white;
-    padding: 20px 50px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px 200px;
     border-radius: 10px;
     text-align: center;
     animation: pop-in 1s;
+    font-size: 80px;
 }
 
 .btn {
-    border: 2px solid #36bbf5;
-    border-radius: 3px;
-    box-shadow: 0 2px rgba(0, 0, 0, 0.15);
-    background: linear-gradient( to bottom, #fff 0%, #fff 49%, #f5f5f5 50%, #eee 100% );
+    border: 2px solid black;
+    border-radius: 50px;
+    background-color: white;
     padding: 10px 40px;
+    font: 50px sans-serif;
+}
+
+.btn:hover {
+    background-color: #2E165B;
+}
+
+.music-btn {
+    border: 2px solid black;
+    border-radius: 50px; 
+    background-color: white;
+    padding: 5px 5px;
     font: 14px sans-serif;
+}
+
+.music-btn:hover {
+    background-color: #7E4EAC;
 }
 
 @keyframes pop-in {
@@ -139,7 +154,7 @@ footer {
     }
 
     50% {
-        transform: translate(0, 30px);
+        transform: translate(0, 35px);
     }
 
     100% {
