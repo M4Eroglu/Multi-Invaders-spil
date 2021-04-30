@@ -9,31 +9,33 @@
 </head>
 
 <body>
-    
+
     <div class="wrap">
         <header>
-            M U L T I - I N V A D E R S
+            <div style="float:left">M U L T I - I N V A D E R S</div>
+            SCORE: <span id="scores"></span>
             <audio id="gameMusic" src="~/sounds/bgmusic.ogg" preload="auto"></audio>
             <button class="music-btn" onclick="togglePlay()" style="float: right">Toggle Music</button>
         </header>
-        
+
         <div class="game-wrapper">
             <div class="game"></div>
             <div class="game-win">
                 <h1>YOU GUYS DID IT!</h1>
                 <h2>You are the best MultiInvaders</h2>
-                <button class="btn" onclick="window.location.reload()">Start New Game</button>
+                <h3>TOTAL SCORE: <span id="scores-wingame"></span></h3>
+                <button class="btn" onclick="document.location.reload()">Start New Game</button>
+                
             </div>
             <div class="game-over">
                 <h1>GAME OVER!</h1>
                 <h2>Better luck next time :(</h2>
-                <button class="btn" onclick="window.location.reload()">Start New Game</button>
+                <h3>TOTAL SCORE: <span id="scores-losegame"></span></h3>
+                <button class="btn" onclick="document.location.reload()">Start New Game</button>
             </div>
         </div>
         <footer>TOTAL LIVES: <span id="lives"></span></footer>
     </div>
     <script src="~/js/site.js"></script>
-    <script>document.getElementById("lives").innerHTML = life-1</script>
 </body>
-
 </html>

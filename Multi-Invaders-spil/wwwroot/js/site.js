@@ -17,7 +17,7 @@ const PLAYER_WIDTH = 200;
 
 // Weapon Settings
 const SHOT_MAXSPEED = 100;
-const SHOT_COOLDOWN = 0.5;
+const SHOT_COOLDOWN = 0.1;
 
 // Virus Settings
 const VIRUS_PER_ROW = 10;
@@ -25,10 +25,6 @@ const VIRUS_PADDING_HORIZONTAL = 200;
 const VIRUS_PADDING_VERTICAL = 100;
 const VIRUS_SPACING_VERTICAL = 100;
 const VIRUS_SHOT_COOLDOWN = 5.0;
-
-// Global Variables
-var life = 10;
-var players = [];
 
 // Game State
 const GAME_STATE =
@@ -45,7 +41,7 @@ const GAME_STATE =
     P2_leftKeyPressed: false,
     P2_rightKeyPressed: false,
     P2_shootKeyPressed: false,
-    
+
     P1_shotsArr: [],
     P1_PlayersCooldown: 0,
 
@@ -56,13 +52,26 @@ const GAME_STATE =
 
     virus: [],
     virusShots: [],
+    players: [],
+
+    score: 0,
+    life: 10,
     gameOver: false,
+
+    //scoresList: [], 
 };
 
 //Functions
-function sendLives()
+//function sendToHighscores() {
+//    scoresListl.push(GAME_STATE.score);
+//}
+
+function getStats()
 {
-    document.getElementById("lives").innerHTML = life-1;
+    document.getElementById("lives").innerHTML = GAME_STATE.life - 1;
+    document.getElementById("scores").innerHTML = GAME_STATE.score;
+    document.getElementById("scores-wingame").innerHTML = GAME_STATE.score;
+    document.getElementById("scores-losegame").innerHTML = GAME_STATE.score;
 }
 
 var gameMusic = document.getElementById("gameMusic");
@@ -126,7 +135,7 @@ function createPlayers($container)
     $player1.className = "player";
     $container.appendChild($player1);
     setPosition($player1, GAME_STATE.P1_playerX, GAME_STATE.P1_playerY);
-    players.push($player1);
+    GAME_STATE.players.push($player1);
  
 
     //Creating Player 2
@@ -137,7 +146,7 @@ function createPlayers($container)
     $player2.className = "player2";
     $container.appendChild($player2);
     setPosition($player2, GAME_STATE.P2_playerX, GAME_STATE.P2_playerY);
-    players.push($player2);
+    GAME_STATE.players.push($player2);
 }
 
 function RemovePlayer($container, player)
@@ -293,6 +302,7 @@ function updateShot1(time ,$container)
                 colSound.play();
                 removeShot1($container, shot);
                 removeVirus($container, virus);
+                updateScore();
                 break;
             }
         }
@@ -331,6 +341,7 @@ function updateShot2(time, $container)
                 colSound.play();
                 removeShot2($container, shot);
                 removeVirus($container, virus);
+                updateScore();
                 break;
             }
         }
@@ -410,11 +421,16 @@ function createVirusShot($container, x, y)
 }
 
 function updateLife() {
-    life--;
+    GAME_STATE.life--;
     const lifeSound = new Audio("sounds/playerGetHit.ogg");
     lifeSound.volume = 0.25;
     lifeSound.play();
 }
+
+function updateScore() {
+    GAME_STATE.score += parseInt(rand(100, 1000));
+}
+
 function updateVirusShot(time, $container)
 {
     const virusShots = GAME_STATE.virusShots;
@@ -438,16 +454,14 @@ function updateVirusShot(time, $container)
             const virusCol = player.getBoundingClientRect();
             if (virusAndShotCollision(shotCol, virusCol))
             {
-                if (life > 1)
+                if (GAME_STATE.life > 1)
                 {
                     updateLife();
-                    sendLives();
                     removeVirusShot($container, virusShot);
                     
                 }
                 else
                 {
-                    sendLives();
                     RemovePlayer($container, player);
                     RemovePlayer($container, player2);
                     gameOver();
@@ -459,16 +473,14 @@ function updateVirusShot(time, $container)
             const virusCol2 = player2.getBoundingClientRect();
             if (virusAndShotCollision(shotCol, virusCol2)) {
 
-                if (life > 1)
+                if (GAME_STATE.life > 1)
                 {
                     updateLife();
-                    sendLives();
                     removeVirusShot($container, virusShot);
                  
                 }
                 else
                 {
-                    sendLives();
                     RemovePlayer($container, player);
                     RemovePlayer($container, player2);
                     gameOver();
@@ -506,6 +518,7 @@ function init()
 function update(e)
 {
     const currentTime = Date.now();
+    getStats();
 
     const time = (currentTime - GAME_STATE.prev_time) / 1000.0;
 
@@ -523,6 +536,7 @@ function update(e)
         wonMusic.volume = 1;
         wonMusic.play();
         document.querySelector(".game-win").style.display = "block";
+        //sendToHighscores();
         return;
     }
 
